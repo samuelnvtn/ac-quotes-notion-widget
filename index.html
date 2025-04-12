@@ -14,7 +14,7 @@
             import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"
             import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"
 
-            var firebaseConfig = {
+            const firebaseConfig = {
                 apiKey: "AIzaSyBUHwNxhWXxikK0U5mRyDR3mRRrkwFXHH0",
                 authDomain: "ac-quotes.firebaseapp.com",
                 projectId: "ac-quotes",
@@ -23,7 +23,7 @@
                 appId: "1:1067388109737:web:91a9406754fe833590fab8"
             }
 
-            // init firebase app
+            // init firebase
             initializeApp(firebaseConfig)
 
             // init services
@@ -32,22 +32,40 @@
             // collection ref
             const colRef = collection(db, "quotes")
 
+            let quotes = []
+
             // get collection data
             getDocs(colRef)
                 .then(snapshot => {
-                    let quotes = []
                     snapshot.docs.forEach(doc => {
                         quotes.push({ ...doc.data() })
                     })
-                    console.log(quotes)
-                    document.getElementById("txt").innerHTML = quotes[0].text
-                    document.getElementById("char").innerHTML = quotes[0].character
-                    document.getElementById("game").innerHTML = quotes[0].game
+                    displayRandomQuote()
+                    checkMidnight()
                 })
                 .catch(err => {
                     console.log(err.message)
                 })
+
+            function displayRandomQuote() {
+                if (quotes.length === 0) return
+                const randomIndex = Math.floor(Math.random() * Math.min(10, quotes.length))
+                const quote = quotes[randomIndex]
+                document.getElementById("txt").innerHTML = quote.text
+                document.getElementById("char").innerHTML = quote.character
+                document.getElementById("game").innerHTML = quote.game
+            }
+
+            function checkMidnight() {
+                setInterval(() => {
+                    const now = new Date()
+                    if (now.getHours() === 0 && now.getMinutes() === 0) {
+                        displayRandomQuote()
+                    }
+                }, 60 * 1000)
+            }
         </script>
+
         <div>
             <img src="https://samuelnvtn.github.io/ac-quotes-notion-widget/img/ac.png" />
             <p id="txt"></p>
