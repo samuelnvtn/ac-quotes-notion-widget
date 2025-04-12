@@ -40,12 +40,18 @@
                         quotes.push({ ...doc.data() })
                     })
                     console.log(quotes)
-                    document.getElementById("qt").innerHTML = quotes[0].text
+                    document.getElementById("txt").innerHTML = quotes[0].text
+                    document.getElementById("char").innerHTML = quotes[0].character
+                    document.getElementById("game").innerHTML = quotes[0].game
                 })
                 .catch(err => {
                     console.log(err.message)
                 })
         </script>
-        <p id="qt"></p>
+        <p id="txt"></p>
+        <div>
+            <p id="char"></p>
+            <p id="game"></p>
+        </div>
     </body>
 </html>
