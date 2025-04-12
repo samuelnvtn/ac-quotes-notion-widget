@@ -4,11 +4,47 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>AC Quote OTD</title>
-        <link rel="icon" type="image/x-icon" href="https://github.com/samuelnvtn/ac-quotes-notion-widget/img/ac.png" />
+        <link rel="icon" type="image/x-icon" href="https://github.com/samuelnvtn/ac-quotes-notion-widget/blob/main/img/ac.png" />
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
     </head>
     <body>
-        <script src="firebase.js"></script>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js"
+            import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js"
+
+            var firebaseConfig = {
+                apiKey: "AIzaSyBUHwNxhWXxikK0U5mRyDR3mRRrkwFXHH0",
+                authDomain: "ac-quotes.firebaseapp.com",
+                projectId: "ac-quotes",
+                storageBucket: "ac-quotes.firebasestorage.app",
+                messagingSenderId: "1067388109737",
+                appId: "1:1067388109737:web:91a9406754fe833590fab8"
+            }
+
+            // init firebase app
+            initializeApp(firebaseConfig)
+
+            // init services
+            const db = getFirestore()
+
+            // collection ref
+            const colRef = collection(db, "test")
+
+            // get collection data
+            getDocs(colRef)
+                .then(snapshot => {
+                    let quotes = []
+                    snapshot.docs.forEach(doc => {
+                        quotes.push({ ...doc.data(), id: doc.id })
+                    })
+                    console.log(quotes)
+                    document.getElementById("qt").innerHTML = quotes[0].message
+                })
+                .catch(err => {
+                    console.log(err.message)
+                })
+        </script>
+        <p id="qt"></p>
     </body>
 </html>
