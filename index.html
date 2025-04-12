@@ -7,6 +7,7 @@
         <link rel="icon" type="image/x-icon" href="https://github.com/samuelnvtn/ac-quotes-notion-widget/blob/main/img/ac.png" />
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
         <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+        <link rel="stylesheet" href="style.css" />
     </head>
     <body>
         <script type="module">
@@ -29,17 +30,17 @@
             const db = getFirestore()
 
             // collection ref
-            const colRef = collection(db, "test")
+            const colRef = collection(db, "quotes")
 
             // get collection data
             getDocs(colRef)
                 .then(snapshot => {
                     let quotes = []
                     snapshot.docs.forEach(doc => {
-                        quotes.push({ ...doc.data(), id: doc.id })
+                        quotes.push({ ...doc.data() })
                     })
                     console.log(quotes)
-                    document.getElementById("qt").innerHTML = quotes[0].message
+                    document.getElementById("qt").innerHTML = quotes[0].text
                 })
                 .catch(err => {
                     console.log(err.message)
